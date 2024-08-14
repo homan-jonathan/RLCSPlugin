@@ -2,14 +2,14 @@
 #include "RLCSPlugin.h"
 
 
-BAKKESMOD_PLUGIN(RLCSPlugin, "write a plugin description here", plugin_version, PLUGINTYPE_FREEPLAY)
+BAKKESMOD_PLUGIN(RLCSPlugin, "Plugin for tracking RLCS and Pro Player Stats.", plugin_version, PLUGINTYPE_FREEPLAY)
 
 std::shared_ptr<CVarManagerWrapper> _globalCvarManager;
 
 void RLCSPlugin::onLoad()
 {
 	_globalCvarManager = cvarManager;
-	//LOG("Plugin loaded!");
+	LOG("Plugin loaded!");	
 	// !! Enable debug logging by setting DEBUG_LOG = true in logging.h !!
 	//DEBUGLOG("RLCSPlugin debug mode enabled");
 
@@ -46,4 +46,11 @@ void RLCSPlugin::onLoad()
 	//});
 	// You could also use std::bind here
 	//gameWrapper->HookEvent("Function TAGame.Ball_TA.Explode", std::bind(&RLCSPlugin::YourPluginMethod, this);
+}
+
+void RLCSPlugin::initialFetch() 
+{
+	if (gameWrapper->IsInOnlineGame()) { return; }
+	ServerWrapper server = gameWrapper->GetCurrentGameState();
+	if (!server) { return; }
 }
